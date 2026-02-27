@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MORTALIS SKIN — Bio-Reactive Tattoo Technology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════
+   ROOT & RESET
+   ══════════════════════════════════════════ */
+:root {
+  --bg: #050505;
+  --bg2: #0a090d;
+  --fg: #f0f0f8;
+  --muted: rgba(240,240,248,0.38);
+  --muted2: rgba(240,240,248,0.18);
+
+  /* Electric Fusion gradient */
+  --cyan:   #00e5ff;
+  --violet: #b400ff;
+  --magenta:#ff00cc;
+  --mid:    #7b2fff;
+
+  --grad: linear-gradient(135deg, var(--violet) 0%, var(--mid) 40%, var(--cyan) 100%);
+  --grad-r: linear-gradient(135deg, var(--cyan) 0%, var(--mid) 60%, var(--violet) 100%);
+  --grad-text: linear-gradient(90deg, var(--cyan) 0%, var(--mid) 50%, var(--magenta) 100%);
+
+  --glass-bg: rgba(10, 8, 18, 0.55);
+  --glass-border: rgba(180, 0, 255, 0.15);
+  --glass-border2: rgba(0, 229, 255, 0.12);
+
+  --r: 20px;
+  --r2: 14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+
+/* hide scrollbar aesthetic */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--mid); border-radius: 2px; }
+
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR
+   ══════════════════════════════════════════ */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--cyan);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: screen;
+  box-shadow: 0 0 16px var(--cyan), 0 0 40px rgba(0,229,255,0.3);
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,229,255,0.4);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.12s ease;
+}
+@media (pointer: coarse) {
+  .cursor, .cursor-ring { display: none; }
+  body { cursor: auto; }
+}
+
+/* ══════════════════════════════════════════
+   NOISE OVERLAY
+   ══════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.5;
+}
+
+/* ══════════════════════════════════════════
+   GRID BACKGROUND
+   ══════════════════════════════════════════ */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════
+   NAV
+   ══════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  padding: 0 clamp(20px, 5vw, 72px);
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(5,5,5,0.7);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo-glyph {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--grad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-shadow: 0 0 20px rgba(0,229,255,0.35), 0 0 40px rgba(180,0,255,0.2);
+  animation: logo-pulse 3s ease-in-out infinite;
+}
+
+@keyframes logo-pulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(0,229,255,0.35), 0 0 32px rgba(180,0,255,0.2); }
+  50%       { box-shadow: 0 0 28px rgba(0,229,255,0.6), 0 0 56px rgba(180,0,255,0.4); }
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(20px, 3vw, 40px);
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--grad-text);
+  transform: scaleX(0);
+  transition: transform 0.25s;
+}
+.nav-links a:hover { color: var(--fg); }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-cta {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border: 1px solid rgba(0,229,255,0.35);
+  border-radius: 100px;
+  color: var(--cyan);
+  background: rgba(0,229,255,0.04);
+  transition: background 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.nav-cta:hover {
+  background: rgba(0,229,255,0.1);
+  box-shadow: 0 0 20px rgba(0,229,255,0.2);
+}
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px; height: 1.5px;
+  background: var(--fg);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+/* ══════════════════════════════════════════
+   HERO
+   ══════════════════════════════════════════ */
+.hero {
+  min-height: 100svh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 100px clamp(20px, 5vw, 72px) 80px;
+}
+
+/* Large hero BG image */
+.hero-bg-img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  opacity: 0.22;
+  filter: saturate(0.6) brightness(0.7);
+}
+
+/* Dark overlay with gradient */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(5,5,5,0.95) 0%,
+    rgba(10,0,20,0.85) 50%,
+    rgba(5,5,5,0.75) 100%
+  );
+  z-index: 1;
+}
+
+/* Animated blobs */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  animation: blob-float 8s ease-in-out infinite;
+  z-index: 1;
+}
+.blob-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(180,0,255,0.2) 0%, transparent 70%);
+  top: -10%; left: -5%;
+  animation-delay: 0s;
+}
+.blob-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(0,229,255,0.15) 0%, transparent 70%);
+  bottom: 10%; right: 5%;
+  animation-delay: -4s;
+}
+.blob-3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(123,47,255,0.18) 0%, transparent 70%);
+  top: 40%; left: 45%;
+  animation-delay: -2s;
+}
+
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -30px) scale(1.05); }
+  66%       { transform: translate(-20px, 20px) scale(0.97); }
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+}
+
+.hero-overline {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+}
+.hero-overline-line {
+  width: 40px; height: 1px;
+  background: var(--grad-text);
+  flex-shrink: 0;
+}
+
+.hero-h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(52px, 10vw, 124px);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+}
+
+.hero-h1 .line2 {
+  font-weight: 100;
+  font-size: 0.55em;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  display: block;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-top: 4px;
+  text-shadow: none;
+  filter: drop-shadow(0 0 20px rgba(0,229,255,0.4));
+}
+
+.hero-h1-glow {
+  text-shadow:
+    0 0 60px rgba(0,229,255,0.25),
+    0 0 120px rgba(180,0,255,0.15);
+}
+
+.hero-desc {
+  font-size: clamp(15px, 1.6vw, 18px);
+  color: rgba(240,240,248,0.6);
+  max-width: 480px;
+  line-height: 1.75;
+  margin: 28px 0 44px;
+  opacity: 0;
+  animation: fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.35s forwards;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.48s forwards;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: var(--grad);
+  border-radius: 100px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  box-shadow: 0 0 40px rgba(0,229,255,0.25), 0 0 80px rgba(180,0,255,0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 60px rgba(0,229,255,0.4), 0 8px 100px rgba(180,0,255,0.25);
+}
+.btn-primary:hover::before { opacity: 1; }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: transparent;
+  border-radius: 100px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(240,240,248,0.7);
+  border: 1px solid rgba(180, 0, 255, 0.3);
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-outline:hover {
+  border-color: rgba(0,229,255,0.5);
+  color: var(--fg);
+  box-shadow: 0 0 24px rgba(0,229,255,0.1);
+}
+
+/* Hero right visual */
+.hero-right {
+  position: absolute;
+  right: clamp(20px, 5vw, 72px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(42%, 460px);
+  z-index: 2;
+  opacity: 0;
+  animation: fade-left 1s cubic-bezier(0.16,1,0.3,1) 0.5s forwards;
+}
+
+.hero-img-frame {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  box-shadow:
+    0 0 0 1px rgba(0,229,255,0.12),
+    0 40px 100px rgba(0,0,0,0.8),
+    0 0 80px rgba(180,0,255,0.15);
+}
+.hero-img-frame img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: top;
+  filter: saturate(1.1) brightness(0.9);
+}
+
+/* Glassmorphism overlay on image */
+.hero-img-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(5,5,5,0.6) 100%
+  );
+  z-index: 1;
+}
+
+/* scan line effect */
+.hero-img-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,229,255,0.012) 2px,
+    rgba(0,229,255,0.012) 4px
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Status chip on image */
+.hero-status-chip {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 3;
+  background: rgba(5,5,5,0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0,229,255,0.25);
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-status-dot {
+  width: 8px; height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--cyan);
+  animation: blink 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+.hero-status-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+/* Hero scroll indicator */
+.hero-scroll {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fade-up 1s 1.2s forwards;
+}
+.hero-scroll-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.hero-scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(0,229,255,0.5), transparent);
+  animation: scroll-line 2s ease-in-out infinite;
+}
+@keyframes scroll-line {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-left {
+  from { opacity: 0; transform: translateY(-50%) translateX(40px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+/* ══════════════════════════════════════════
+   MARQUEE STRIP
+   ══════════════════════════════════════════ */
+.marquee-strip {
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(180,0,255,0.04);
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  z-index: 10;
+}
+.marquee-inner {
+  display: inline-flex;
+  animation: marquee 20s linear infinite;
+  gap: 0;
+}
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 32px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.marquee-dot {
+  width: 4px; height: 4px;
+  background: var(--grad-text);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ══════════════════════════════════════════
+   SECTION COMMON
+   ══════════════════════════════════════════ */
+section {
+  padding: clamp(80px, 12vw, 140px) clamp(20px, 5vw, 72px);
+  position: relative;
+  overflow: hidden;
+}
+
+.sec-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.sec-label::before {
+  content: '';
+  width: 28px; height: 1px;
+  background: var(--grad-text);
+  flex-shrink: 0;
+}
+
+.sec-h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(32px, 5vw, 64px);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+}
+
+.sec-p {
+  font-size: clamp(15px, 1.4vw, 17px);
+  color: rgba(240,240,248,0.55);
+  line-height: 1.75;
+  max-width: 560px;
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ══════════════════════════════════════════
+   CONCEPT SECTION
+   ══════════════════════════════════════════ */
+#concept {
+  background: var(--bg2);
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 6vw, 80px);
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.concept-visual {
+  position: relative;
+}
+
+.concept-img-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 16/9;
+  box-shadow: 0 0 0 1px var(--glass-border), 0 30px 80px rgba(0,0,0,0.6);
+}
+.concept-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.concept-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(180,0,255,0.08) 0%, transparent 50%, rgba(0,229,255,0.06) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* floating glass stat */
+.concept-stat {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 18px 22px;
+  text-align: center;
+}
+.concept-stat-num {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  letter-spacing: -0.04em;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.concept-stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.concept-content { max-width: 540px; }
+
+.concept-features {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feat-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--glass-bg);
+  border: 1px solid rgba(180,0,255,0.1);
+  border-radius: var(--r2);
+  transition: border-color 0.25s, background 0.25s;
+}
+.feat-row:hover {
+  border-color: rgba(0,229,255,0.2);
+  background: rgba(0,229,255,0.04);
+}
+.feat-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--grad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(0,229,255,0.2);
+}
+.feat-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.feat-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ══════════════════════════════════════════
+   GALLERY / LOOKBOOK
+   ══════════════════════════════════════════ */
+#lookbook {
+  background: var(--bg);
+}
+
+.lookbook-header {
+  max-width: 1200px;
+  margin: 0 auto 48px;
+}
+
+.lookbook-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 14px;
+}
+
+.lb-item {
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.lb-item:hover { transform: scale(1.02); }
+
+.lb-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: filter 0.4s;
+}
+.lb-item:hover img { filter: brightness(1.1) saturate(1.2); }
+
+.lb-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(5,5,5,0.7) 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.lb-item:hover::after { opacity: 1; }
+
+/* Cyan border glow on hover */
+.lb-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 1px rgba(0,229,255,0);
+  transition: box-shadow 0.3s;
+  z-index: 2;
+  pointer-events: none;
+}
+.lb-item:hover::before {
+  box-shadow: inset 0 0 0 1px rgba(0,229,255,0.4), 0 0 30px rgba(0,229,255,0.1);
+}
+
+.lb-item--tall { aspect-ratio: 3/5; }
+.lb-item--sq   { aspect-ratio: 1; }
+.lb-item--wide { aspect-ratio: 16/9; grid-column: span 2; }
+.lb-item--med  { aspect-ratio: 4/3; }
+
+.lb-label {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  z-index: 3;
+  font-family: 'Space Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(240,240,248,0.5);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.lb-item:hover .lb-label { opacity: 1; transform: none; }
+
+/* ══════════════════════════════════════════
+   TECHNOLOGY / APP
+   ══════════════════════════════════════════ */
+#tech {
+  background: var(--bg2);
+  position: relative;
+}
+
+.tech-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(32px, 6vw, 80px);
+  align-items: center;
+}
+
+.tech-app-frame {
+  position: relative;
+}
+
+.tech-img-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--glass-border2), 0 40px 100px rgba(0,0,0,0.7), 0 0 60px rgba(0,229,255,0.06);
+}
+.tech-img-wrap img { width: 100%; display: block; }
+
+/* Lens flare effect */
+.lens-flare {
+  position: absolute;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,229,255,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(30px);
+  pointer-events: none;
+  top: -30px; right: -30px;
+  animation: flare-drift 6s ease-in-out infinite;
+}
+@keyframes flare-drift {
+  0%, 100% { transform: translate(0,0) scale(1); opacity: 0.6; }
+  50%       { transform: translate(20px, 20px) scale(1.2); opacity: 1; }
+}
+
+.tech-content .sec-h2 { margin-bottom: 16px; }
+
+.tech-points {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.tech-point {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r2);
+  padding: 18px 20px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.tech-point:hover {
+  border-color: rgba(0,229,255,0.25);
+  transform: translateY(-3px);
+}
+.tech-point-icon {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.tech-point-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.tech-point-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ══════════════════════════════════════════
+   PRODUCTS / PACKAGES
+   ══════════════════════════════════════════ */
+#products {
+  background: var(--bg);
+}
+
+.products-header {
+  max-width: 1200px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+.products-header .sec-label { justify-content: center; }
+.products-header .sec-p { margin: 0 auto; text-align: center; }
+
+.products-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.product-card {
+  background: var(--glass-bg);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+.product-card:hover {
+  border-color: rgba(0,229,255,0.3);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,229,255,0.08);
+}
+.product-card.featured {
+  border-color: rgba(0,229,255,0.25);
+  box-shadow: 0 0 60px rgba(0,229,255,0.06), inset 0 0 60px rgba(180,0,255,0.03);
+}
+
+.product-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--grad);
+  color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 100px;
+  box-shadow: 0 0 20px rgba(0,229,255,0.3);
+}
+
+.product-img {
+  aspect-ratio: 1;
+  overflow: hidden;
+  position: relative;
+}
+.product-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.product-card:hover .product-img img { transform: scale(1.06); }
+
+/* gradient overlay */
+.product-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(180,0,255,0.1) 0%, transparent 50%, rgba(0,229,255,0.06) 100%);
+  z-index: 1;
+}
+
+.product-body {
+  padding: 24px;
+}
+
+.product-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 8px;
+}
+
+.product-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.product-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.product-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.product-price {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.03em;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.product-price-note {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.product-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 100px;
+  background: rgba(0,229,255,0.06);
+  border: 1px solid rgba(0,229,255,0.25);
+  color: var(--cyan);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  display: block;
+}
+.product-btn:hover {
+  background: rgba(0,229,255,0.12);
+  box-shadow: 0 0 24px rgba(0,229,255,0.15);
+}
+.product-card.featured .product-btn {
+  background: var(--grad);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(0,229,255,0.2);
+}
+.product-card.featured .product-btn:hover {
+  box-shadow: 0 4px 40px rgba(0,229,255,0.35);
+}
+
+/* ══════════════════════════════════════════
+   STUDIO
+   ══════════════════════════════════════════ */
+#studio {
+  background: var(--bg2);
+}
+
+.studio-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(32px, 6vw, 80px);
+  align-items: center;
+}
+
+.studio-imgs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 12px;
+}
+.studio-img {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--glass-border);
+}
+.studio-img img { width: 100%; display: block; }
+.studio-img--main { grid-column: span 2; aspect-ratio: 16/7; }
+.studio-img--side { aspect-ratio: 1; }
+
+.studio-content .sec-p { margin-bottom: 32px; }
+
+.studio-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--glass-border);
+  border-radius: var(--r2);
+  overflow: hidden;
+}
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: var(--glass-bg);
+  font-size: 13px;
+}
+.spec-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.spec-value {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+.spec-value.grad {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ══════════════════════════════════════════
+   TESTIMONIALS
+   ══════════════════════════════════════════ */
+#testimonials {
+  background: var(--bg);
+}
+
+.testimonials-header {
+  max-width: 1200px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+.testimonials-header .sec-label { justify-content: center; }
+
+.testimonials-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.testi-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: clamp(20px, 3vw, 32px);
+  position: relative;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.testi-card:hover {
+  border-color: rgba(0,229,255,0.2);
+  transform: translateY(-4px);
+}
+
+.testi-stars {
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.testi-text {
+  font-size: 14px;
+  color: rgba(240,240,248,0.7);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.testi-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--grad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.testi-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+.testi-meta {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.08em;
+}
+
+/* ══════════════════════════════════════════
+   CTA FULL-WIDTH
+   ══════════════════════════════════════════ */
+#cta {
+  background: var(--bg2);
+  text-align: center;
+  position: relative;
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.cta-inner .sec-h2 {
+  font-size: clamp(36px, 6vw, 80px);
+  margin-bottom: 20px;
+}
+
+.cta-inner .sec-h2 span {
+  display: block;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(0,229,255,0.3));
+}
+
+.cta-inner .sec-p {
+  margin: 0 auto 44px;
+  text-align: center;
+}
+
+.cta-form {
+  display: flex;
+  gap: 12px;
+  max-width: 500px;
+  margin: 0 auto 24px;
+}
+
+.cta-input {
+  flex: 1;
+  background: rgba(240,240,248,0.05);
+  border: 1px solid rgba(180,0,255,0.2);
+  border-radius: 100px;
+  padding: 16px 24px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  color: var(--fg);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.cta-input::placeholder { color: var(--muted2); }
+.cta-input:focus {
+  border-color: rgba(0,229,255,0.4);
+  box-shadow: 0 0 20px rgba(0,229,255,0.1);
+}
+
+.cta-note {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════ */
+footer {
+  background: #030303;
+  border-top: 1px solid var(--glass-border);
+  padding: clamp(48px, 7vw, 80px) clamp(20px, 5vw, 72px) clamp(32px, 5vw, 48px);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: clamp(28px, 5vw, 60px);
+  margin-bottom: 60px;
+}
+
+.footer-brand .nav-logo {
+  font-size: 16px;
+  margin-bottom: 18px;
+}
+
+.footer-brand-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 240px;
+  margin-bottom: 24px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 10px;
+}
+.footer-social {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(240,240,248,0.04);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.footer-social:hover {
+  border-color: rgba(0,229,255,0.3);
+  background: rgba(0,229,255,0.06);
+}
+
+.footer-col-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: rgba(240,240,248,0.5);
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.footer-links a {
+  font-size: 13px;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--fg); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-copy {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.footer-legal {
+  display: flex;
+  gap: 20px;
+}
+.footer-legal a {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  transition: color 0.2s;
+}
+.footer-legal a:hover { color: var(--muted); }
+
+/* ══════════════════════════════════════════
+   MOBILE NAV OVERLAY
+   ══════════════════════════════════════════ */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(5,5,5,0.97);
+  backdrop-filter: blur(20px);
+  z-index: 490;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.mobile-menu.open { opacity: 1; pointer-events: all; }
+.mobile-menu a {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 8vw, 40px);
+  letter-spacing: -0.02em;
+  color: rgba(240,240,248,0.7);
+  padding: 8px 0;
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--cyan); }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .hero-right { display: none; }
+  .hero-h1 { font-size: clamp(52px, 11vw, 96px); }
+  .hero-inner { max-width: 100%; }
+}
+
+@media (max-width: 900px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  .mobile-menu { display: flex; }
+
+  .concept-grid  { grid-template-columns: 1fr; }
+  .tech-grid     { grid-template-columns: 1fr; }
+  .studio-grid   { grid-template-columns: 1fr; }
+  .products-grid { grid-template-columns: 1fr 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .lookbook-grid { grid-template-columns: 1fr 1fr; }
+  .lb-item--wide { grid-column: span 2; }
+
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .products-grid { grid-template-columns: 1fr; }
+  .lookbook-grid { grid-template-columns: 1fr; }
+  .lb-item--wide { grid-column: span 1; aspect-ratio: 4/3; }
+  .tech-points { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+  .cta-form { flex-direction: column; }
+  .hero-ctas { flex-direction: column; }
+  .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+  .studio-imgs { grid-template-columns: 1fr; }
+  .studio-img--main { grid-column: span 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#concept" onclick="closeMobile()">Technologia</a>
+  <a href="#lookbook" onclick="closeMobile()">Lookbook</a>
+  <a href="#tech" onclick="closeMobile()">Aplikacja</a>
+  <a href="#products" onclick="closeMobile()">Oferta</a>
+  <a href="#studio" onclick="closeMobile()">Studio</a>
+  <a href="#cta" onclick="closeMobile()">Zapisz się</a>
+</div>
+
+<!-- ══════ NAV ══════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-glyph">⬡</div>
+    Mortalis Skin
+  </a>
+  <ul class="nav-links">
+    <li><a href="#concept">Technologia</a></li>
+    <li><a href="#lookbook">Lookbook</a></li>
+    <li><a href="#tech">Aplikacja</a></li>
+    <li><a href="#products">Oferta</a></li>
+    <li><a href="#studio">Studio</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Zapisz się</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero" style="padding-left: clamp(20px,5vw,72px);">
+  <div class="grid-bg"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="hero-bg-img"><img src="../mortalis-skin/img/m7.jpg" alt="Mortalis Skin" loading="eager"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-inner">
+    <div class="hero-overline">
+      <span class="hero-overline-line"></span>
+      Bio-Reactive Tattoo Technology
+    </div>
+    <h1 class="hero-h1 hero-h1-glow">
+      MORTALIS
+      <span class="line2">SKIN INTERFACE</span>
+    </h1>
+    <p class="hero-desc">
+      Twoja skóra staje się interfejsem. Bio-reaktywny tusz reaguje na emocje, dane biometryczne i otoczenie — w czasie rzeczywistym. Tattoo, które żyje razem z tobą.
+    </p>
+    <div class="hero-ctas">
+      <a href="#products" class="btn-primary">
+        Odkryj kolekcje
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#concept" class="btn-outline">Jak to działa</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-img-frame">
+      <img src="../mortalis-skin/img/m4.jpg" alt="Mortalis Skin — Bio-reaktywny tatuaż">
+      <div class="hero-status-chip">
+        <span class="hero-status-dot"></span>
+        <span class="hero-status-text">Bio-signal active · 72 bpm</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="hero-scroll-text">Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════ MARQUEE ══════ -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <!-- repeat twice for seamless loop -->
+    <span class="marquee-item"><span class="marquee-dot"></span>Bio-Reaktywny Tusz</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Integracja z AR</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Personalizacja Kodem</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Neurointerfejsy</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Dane Biometryczne</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Żywy Avatar</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Wearable Tech</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Emocje w Czasie Rzeczywistym</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Bio-Reaktywny Tusz</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Integracja z AR</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Personalizacja Kodem</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Neurointerfejsy</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Dane Biometryczne</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Żywy Avatar</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Wearable Tech</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Emocje w Czasie Rzeczywistym</span>
+  </div>
+</div>
+
+<!-- ══════ CONCEPT ══════ -->
+<section id="concept">
+  <div class="grid-bg" style="opacity: 0.5;"></div>
+  <div class="concept-grid">
+
+    <div class="concept-visual reveal">
+      <div class="concept-img-wrap">
+        <img src="../mortalis-skin/img/m3.jpg" alt="Bio-reaktywny tatuaż w akcji">
+      </div>
+      <div class="concept-stat">
+        <div class="concept-stat-num">3×</div>
+        <div class="concept-stat-label">Warstwy danych</div>
+      </div>
+    </div>
+
+    <div class="concept-content">
+      <div class="sec-label reveal">Jak to działa</div>
+      <h2 class="sec-h2 reveal">Dialog między<br>ciałem a kodem.</h2>
+      <p class="sec-p reveal">
+        Mortalis Skin to pierwszy system bio-reaktywnych tatuaży, który tłumaczy twoje emocje, stan zdrowia i otoczenie na żywą, świetlistą narrację na skórze. To nie tusz — to interfejs.
+      </p>
+
+      <div class="concept-features">
+        <div class="feat-row reveal">
+          <div class="feat-icon">⚡</div>
+          <div>
+            <div class="feat-title">Bio-reaktywność</div>
+            <div class="feat-desc">Tusz reaguje na tętno, poziom adrenaliny, temperaturę i impulsy elektrochemiczne w czasie rzeczywistym.</div>
+          </div>
+        </div>
+        <div class="feat-row reveal">
+          <div class="feat-icon">🔮</div>
+          <div>
+            <div class="feat-title">Personalizacja sekwencjami</div>
+            <div class="feat-desc">Zaprojektuj własne wzory emocjonalne przez aplikację. Każda emocja dostaje unikalną wizualną sekwencję.</div>
+          </div>
+        </div>
+        <div class="feat-row reveal">
+          <div class="feat-icon">◈</div>
+          <div>
+            <div class="feat-title">Żywy cyfrowy avatar</div>
+            <div class="feat-desc">Tatuaż pełni funkcję ID w cyfrowym świecie — połączony z AR, sieciami społecznościowymi i wearable tech.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ LOOKBOOK ══════ -->
+<section id="lookbook">
+  <div class="lookbook-header">
+    <div class="sec-label reveal">Wizje</div>
+    <h2 class="sec-h2 reveal">Lookbook.<br><span style="font-weight:100;letter-spacing:0.15em;">Mortalis in motion.</span></h2>
+  </div>
+
+  <div class="lookbook-grid reveal">
+    <div class="lb-item lb-item--tall">
+      <span class="lb-label">Refleksja · Model I</span>
+      <img src="../mortalis-skin/img/m1.jpg" alt="Mortalis — kobieta z neonowym tatuażem">
+    </div>
+    <div class="lb-item lb-item--sq">
+      <span class="lb-label">Wzory · Kolekcja Cypher</span>
+      <img src="../mortalis-skin/img/m2.jpg" alt="Wzory bio-reaktywne">
+    </div>
+    <div class="lb-item lb-item--sq" style="align-self: end;">
+      <span class="lb-label">Energetyk · Model V</span>
+      <img src="../mortalis-skin/img/m5.jpg" alt="Mortalis — mężczyzna z telefonem">
+    </div>
+    <div class="lb-item lb-item--wide">
+      <span class="lb-label">Nocna sekwencja · Klub</span>
+      <img src="../mortalis-skin/img/m3.jpg" alt="Neonowe tatuaże w klubie">
+    </div>
+    <div class="lb-item lb-item--med">
+      <span class="lb-label">Burza · Model VI</span>
+      <img src="../mortalis-skin/img/m6.jpg" alt="Tatuaż błyskawica na ramieniu">
+    </div>
+    <div class="lb-item lb-item--sq">
+      <span class="lb-label">Emocja · Niebieskość</span>
+      <img src="../mortalis-skin/img/m7.jpg" alt="Mortalis — nocna sesja">
+    </div>
+  </div>
+</section>
+
+<!-- ══════ TECH / APP ══════ -->
+<section id="tech">
+  <div class="grid-bg" style="opacity: 0.4;"></div>
+  <div class="tech-grid">
+
+    <div class="tech-app-frame reveal">
+      <div class="lens-flare"></div>
+      <div class="tech-img-wrap">
+        <img src="../mortalis-skin/img/m9.jpg" alt="Aplikacja Mortalis Skin">
+      </div>
+    </div>
+
+    <div class="tech-content">
+      <div class="sec-label reveal">Aplikacja</div>
+      <h2 class="sec-h2 reveal">Twój panel<br>kreacji.</h2>
+      <p class="sec-p reveal">
+        Zaprojektuj własne sekwencje emocjonalne. Połącz tatuaż z danymi biometrycznymi, AR i sieciami społecznościowymi. Pełna kontrola nad tym, jak twoja skóra reaguje na świat.
+      </p>
+
+      <div class="tech-points reveal">
+        <div class="tech-point">
+          <div class="tech-point-icon">📱</div>
+          <div class="tech-point-title">Pattern Designer</div>
+          <div class="tech-point-desc">Projektuj wzory przeciągnięciem palca.</div>
+        </div>
+        <div class="tech-point">
+          <div class="tech-point-icon">🫀</div>
+          <div class="tech-point-title">Bio Monitor</div>
+          <div class="tech-point-desc">Połączenie z smartwatchem i danymi zdrowotnymi.</div>
+        </div>
+        <div class="tech-point">
+          <div class="tech-point-icon">👤</div>
+          <div class="tech-point-title">Avatar ID</div>
+          <div class="tech-point-desc">Tatuaż jako cyfrowa tożsamość w metaverse.</div>
+        </div>
+        <div class="tech-point">
+          <div class="tech-point-icon">🌐</div>
+          <div class="tech-point-title">AR Overlay</div>
+          <div class="tech-point-desc">Rozszerzona rzeczywistość nakładana na wzory.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ PRODUCTS ══════ -->
+<section id="products">
+  <div class="products-header">
+    <div class="sec-label reveal">Oferta</div>
+    <h2 class="sec-h2 reveal">Wybierz<br>swój interfejs.</h2>
+    <p class="sec-p reveal">Trzy ścieżki wejścia do ekosystemu Mortalis Skin. Od pierwszego tatuażu po pełną integrację bio-cyfrową.</p>
+  </div>
+
+  <div class="products-grid">
+
+    <div class="product-card reveal">
+      <div class="product-img">
+        <img src="../mortalis-skin/img/m6.jpg" alt="Mortalis Entry">
+      </div>
+      <div class="product-body">
+        <div class="product-tag">Wejście do systemu</div>
+        <div class="product-name">INIT_01</div>
+        <div class="product-desc">Pierwszy tatuaż bio-reaktywny. Jeden wzór z podstawową sekwencją emocjonalną. Idealne do odkrycia technologii.</div>
+        <div class="product-price-row">
+          <div class="product-price">1 200 zł</div>
+          <div class="product-price-note">sesja + tusz</div>
+        </div>
+        <a href="#cta" class="product-btn">Zarezerwuj sesję</a>
+      </div>
+    </div>
+
+    <div class="product-card featured reveal">
+      <div class="product-badge">Bestseller</div>
+      <div class="product-img">
+        <img src="../mortalis-skin/img/m1.jpg" alt="Mortalis Core">
+      </div>
+      <div class="product-body">
+        <div class="product-tag">Pełne doświadczenie</div>
+        <div class="product-name">CORE_02</div>
+        <div class="product-desc">Kompleksowy projekt — do 3 wzorów, integracja z aplikacją, dostęp do AR i panel Bio Monitora przez 12 miesięcy.</div>
+        <div class="product-price-row">
+          <div class="product-price">3 800 zł</div>
+          <div class="product-price-note">pakiet roczny</div>
+        </div>
+        <a href="#cta" class="product-btn">Zarezerwuj sesję</a>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img">
+        <img src="../mortalis-skin/img/m5.jpg" alt="Mortalis Nexus">
+      </div>
+      <div class="product-body">
+        <div class="product-tag">Pełna integracja</div>
+        <div class="product-name">NEXUS_03</div>
+        <div class="product-desc">Nieograniczone sesje, pełny dostęp do API i neurointerfejsów, priorytetowy dostęp do nowych kolekcji wzorów.</div>
+        <div class="product-price-row">
+          <div class="product-price">7 500 zł</div>
+          <div class="product-price-note">abonament / rok</div>
+        </div>
+        <a href="#cta" class="product-btn">Zarezerwuj sesję</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════ STUDIO ══════ -->
+<section id="studio">
+  <div class="studio-grid">
+
+    <div class="studio-imgs reveal">
+      <div class="studio-img studio-img--main">
+        <img src="../mortalis-skin/img/m8.jpg" alt="Studio Mortalis Skin">
+      </div>
+      <div class="studio-img studio-img--side">
+        <img src="../mortalis-skin/img/m10.jpg" alt="Studio — wnętrze">
+      </div>
+      <div class="studio-img studio-img--side">
+        <img src="../mortalis-skin/img/m4.jpg" alt="Studio — sesja tatuażu">
+      </div>
+    </div>
+
+    <div class="studio-content">
+      <div class="sec-label reveal">Studio</div>
+      <h2 class="sec-h2 reveal">Laboratorium<br>jutra.</h2>
+      <p class="sec-p reveal">
+        Mortalis Studio to przestrzeń, w której technologia spotyka ciało. Sterylna, neonowa, bezkompromisowa. Każda sesja to rytuał przejścia — z obecności do interfejsu.
+      </p>
+
+      <div class="studio-specs reveal">
+        <div class="spec-item">
+          <span class="spec-label">Lokalizacja</span>
+          <span class="spec-value grad">Warszawa · Nowa 7</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Godziny</span>
+          <span class="spec-value">Pon–Sob · 11:00–21:00</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Rezerwacja</span>
+          <span class="spec-value">Min. 72h wcześniej</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Certyfikat</span>
+          <span class="spec-value grad">BioTech Safety ISO 22716</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Tusz</span>
+          <span class="spec-value">Bio-synthetic, hypoallergenic</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ TESTIMONIALS ══════ -->
+<section id="testimonials">
+  <div class="testimonials-header">
+    <div class="sec-label reveal">Doświadczenia</div>
+    <h2 class="sec-h2 reveal">Głosy interfejsów.</h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">„To nie jest tatuaż. To coś, co żyje. Kiedy jestem podekscytowana, wzór na ramieniu pulsuje szybciej. Niesamowite."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AK</div>
+        <div>
+          <div class="testi-name">Aleksandra K.</div>
+          <div class="testi-meta">CORE_02 · Warszawa</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">„Integracja z aplikacją działa perfekcyjnie. Mój tatuaż jest teraz moim ID w metaverse. To jest przyszłość."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">MN</div>
+        <div>
+          <div class="testi-name">Michał N.</div>
+          <div class="testi-meta">NEXUS_03 · Kraków</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">„Studio robi wrażenie. Cały rytuał — od briefingu po wykonanie — to doświadczenie, które chce się przeżywać w kółko."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">ZW</div>
+        <div>
+          <div class="testi-name">Zofia W.</div>
+          <div class="testi-meta">INIT_01 → CORE_02</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CTA ══════ -->
+<section id="cta">
+  <div class="blob blob-1" style="opacity: 0.5;"></div>
+  <div class="blob blob-2" style="opacity: 0.4;"></div>
+  <div class="grid-bg"></div>
+  <div class="cta-inner">
+    <div class="sec-label reveal" style="justify-content: center;">Early Access</div>
+    <h2 class="sec-h2 reveal">
+      Gotowy na
+      <span>interfejs?</span>
+    </h2>
+    <p class="sec-p reveal">
+      Dołącz do listy oczekujących. Pierwsze 100 osób otrzymuje 20% rabatu na sesję CORE_02 i dożywotni dostęp do beta funkcji aplikacji.
+    </p>
+    <form class="cta-form reveal" onsubmit="handleSubmit(event)">
+      <input type="email" class="cta-input" placeholder="twoj@email.com" required>
+      <button type="submit" class="btn-primary">
+        Dołącz
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </form>
+    <p class="cta-note reveal">Bez spamu. Rezygnacja jednym kliknięciem.</p>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-logo" style="font-family: 'Syne'; font-weight: 800; font-size: 16px; letter-spacing: 0.18em;">
+        <div class="nav-logo-glyph">⬡</div>
+        Mortalis Skin
+      </div>
+      <p class="footer-brand-desc">Bio-reaktywna technologia tatuażu łącząca ciało z cyfrowym światem. Mortalis Skin — język skóry, który pulsuje.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social">✦</a>
+        <a href="#" class="footer-social">◈</a>
+        <a href="#" class="footer-social">⬡</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Produkt</div>
+      <ul class="footer-links">
+        <li><a href="#concept">Technologia</a></li>
+        <li><a href="#tech">Aplikacja</a></li>
+        <li><a href="#products">Oferta</a></li>
+        <li><a href="#lookbook">Lookbook</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Studio</div>
+      <ul class="footer-links">
+        <li><a href="#studio">Lokalizacja</a></li>
+        <li><a href="#cta">Rezerwacja</a></li>
+        <li><a href="#">Bezpieczeństwo</a></li>
+        <li><a href="#">Certyfikaty</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Kontakt</div>
+      <ul class="footer-links">
+        <li><a href="mailto:hello@mortalis.skin">hello@mortalis.skin</a></li>
+        <li><a href="#">+48 500 000 000</a></li>
+        <li><a href="#">Warszawa · Nowa 7</a></li>
+        <li><a href="#cta">Newsletter</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Mortalis Skin. All rights reserved.</span>
+    <div class="footer-legal">
+      <a href="#">Polityka prywatności</a>
+      <a href="#">Regulamin</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════ SCRIPTS ══════ -->
+<script>
+/* ─── Cursor ─── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let cx = 0, cy = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  cx = e.clientX; cy = e.clientY;
+  cursor.style.left = cx + 'px';
+  cursor.style.top  = cy + 'px';
+});
+
+(function animRing() {
+  rx += (cx - rx) * 0.12;
+  ry += (cy - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animRing);
+})();
+
+document.querySelectorAll('a, button, .product-card, .testi-card, .feat-row').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width  = '18px';
+    cursor.style.height = '18px';
+    cursor.style.background = 'var(--violet)';
+    ring.style.width  = '52px';
+    ring.style.height = '52px';
+    ring.style.borderColor = 'rgba(180,0,255,0.5)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width  = '10px';
+    cursor.style.height = '10px';
+    cursor.style.background = 'var(--cyan)';
+    ring.style.width  = '36px';
+    ring.style.height = '36px';
+    ring.style.borderColor = 'rgba(0,229,255,0.4)';
+  });
+});
+
+/* ─── Scroll reveal ─── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const siblings = [...el.parentElement.querySelectorAll('.reveal')];
+      const idx = siblings.indexOf(el);
+      el.style.transitionDelay = (idx * 80) + 'ms';
+      el.classList.add('visible');
+      observer.unobserve(el);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ─── Mobile menu ─── */
+const mobileMenu = document.getElementById('mobileMenu');
+const hamburger  = document.getElementById('hamburger');
+
+function toggleMobile() {
+  mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+}
+function closeMobile() {
+  mobileMenu.classList.remove('open');
+  hamburger.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ─── Form submit ─── */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  btn.textContent = '✓ Zapisano!';
+  btn.style.background = 'linear-gradient(135deg, #00e5ff, #00c9a7)';
+  btn.style.pointerEvents = 'none';
+  e.target.querySelector('input').value = '';
+}
+
+/* ─── Nav scroll effect ─── */
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    nav.style.background = 'rgba(5,5,5,0.9)';
+  } else {
+    nav.style.background = 'rgba(5,5,5,0.7)';
+  }
+});
+</script>
+</body>
+</html>
